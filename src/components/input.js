@@ -2,10 +2,11 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { COMPONENTS, SERVICES } from "../constants/constants";
+import { COMPONENTS } from "../constants/constants";
 
 const Input = (props) => {
   const name = props.name;
+
   const required = props.required;
   return (
     <>
@@ -14,11 +15,29 @@ const Input = (props) => {
         name={props.name}
         control={props.control}
         rules={{ required: required }}
-        render={({ field }) => <TextField
+        render={({ field }) => props.getOnChange ? <TextField
           {...field}
+          multiline={props.multiline}
+          disabled={props.disabled}
+          rows={props.rows}
           placeholder={props.placeholder}
           type={props.type}
           margin={'normal'}
+          value={props.value}
+          onChange={props.onChange}
+          defaultValue={props.defaultValue}
+          fullWidth
+
+        /> : <TextField
+          {...field}
+          multiline={props.multiline}
+          disabled={props.disabled}
+          rows={props.rows}
+          placeholder={props.placeholder}
+          type={props.type}
+          margin={'normal'}
+          value={props.value}
+          defaultValue={props.defaultValue}
           fullWidth
 
         />

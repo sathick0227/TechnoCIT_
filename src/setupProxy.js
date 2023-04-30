@@ -15,5 +15,32 @@ module.exports = app => {
                 changeOrigin: true
             })
     )
-    
-}
+    app.use(
+        createProxyMiddleware('/api/Event/GetEvents',
+            {
+                target: 'http://31.220.82.50:202',
+                changeOrigin: true
+            })
+    )
+    app.use(
+        createProxyMiddleware('/api/Event/AddEvent',
+            {
+                target: 'http://31.220.82.50:202',
+                changeOrigin: true
+            })
+    )
+    app.use(
+        createProxyMiddleware('/api/Event/UpdateEvent',
+            {
+                target: 'http://31.220.82.50:202',
+                changeOrigin: true
+            })
+    )
+    app.use(
+        createProxyMiddleware('/api/Event/DeleteEvent/',
+            {
+                target: 'http://31.220.82.50:202',
+                changeOrigin: true
+            })
+    )
+}   

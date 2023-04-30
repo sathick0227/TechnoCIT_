@@ -16,36 +16,30 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import { SCREENS, COMPONENTS, COLORS, STRING, UTILS} from '../../constants/constants';
+import { SCREENS, COMPONENTS, COLORS, STRING, UTILS } from '../../constants/constants';
 
 
 const SignupForm = () => {
+  const navigate = useNavigate();
   const [emailerror, setEmailerror] = useState()
   const [mobileError, setMobileError] = useState()
   const [isLoading, setIsLoading] = React.useState(false);
-
-  const navigate = useNavigate();
-  const { handleSubmit, control, formState: { errors } } = useForm();
+  const [proceed, setProceed] = React.useState(false);
+  const { handleSubmit, control, formState: { errors }, setValue } = useForm();
 
   const onSubmit = (data) => {
     setIsLoading(true)
     data.dob = moment.utc(data.dob).format();
-    let proceed = false;
+
     // email validation
-    if (isValidEmail(data)) {
-      setEmailerror(false)
-      proceed = true;
-    } else {
-      proceed = false;
-      setEmailerror(true)
-    }
+
     // phone number validation
     if (isValidPhone(data) && data.mobile.length > UTILS.MIN_PHONE_LENGTH && data.mobile.length < UTILS.MAX_PHONE_LENGTH) {
       setMobileError(false)
-      proceed = true;
+      setProceed(true);
     } else {
       setMobileError(true)
-      proceed = false;
+      setProceed(false)
     }
 
     if (proceed) {
@@ -70,6 +64,15 @@ const SignupForm = () => {
 
     }
   }
+  const something = (data) => {
+    if (isValidEmail(data)) {
+      setEmailerror(false)
+      setProceed(false);
+    } else {
+      setProceed(false)
+      setEmailerror(true)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -87,7 +90,7 @@ const SignupForm = () => {
           }}>
           <Typography sx={{ textAlign: COMPONENTS.CENTER, fontWeight: COMPONENTS.FONTWEIGHT }} variant={COMPONENTS.H4} gutterBottom>
             {STRING.SIGN_UP}
-          </Typography>x
+          </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Input control={control} error={errors.name} name={COMPONENTS.NAME} placeholder={STRING.NAME} type={COMPONENTS.TEXT} required={true} />
@@ -96,11 +99,33 @@ const SignupForm = () => {
               <Input control={control} error={errors.role} name={COMPONENTS.ROLE} placeholder={STRING.ROLE} type={COMPONENTS.TEXT} required={true} />
             </Grid>
           </Grid>
-          <Input control={control} error={errors.email} name={COMPONENTS.EMAIL} placeholder={STRING.EMAIL} type={COMPONENTS.TEXT} isValid={emailerror} required={true} />
+          <Input control={control} error={errors.email} name={COMPONENTS.EMAIL} placeholder={STRING.EMAIL}
+            getOnChange={true}
+            onChange={(ev) => {
+              if (isValidEmail(ev.target.value)) {
+                setEmailerror(false);
+                errors.email = false;
+              } else {
+                setEmailerror(true)
+                errors.email = true;
+              }
+            }}
+            type={COMPONENTS.EMAIL} isValid={emailerror} required={true} />
           <Input control={control} error={errors.password} name={COMPONENTS.PASSWORD} placeholder={STRING.PASSWORD} type={COMPONENTS.PASSWORD} required={true} />
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <Input control={control} error={errors.mobile} name={COMPONENTS.MOBILE} placeholder={STRING.MOBILE} type={COMPONENTS.TEXT} isValid={mobileError} required={true} />
+              <Input control={control} error={errors.mobile} name={COMPONENTS.MOBILE} placeholder={STRING.MOBILE}
+                getOnChange={true}
+                onChange={(ev) => {
+                  if (isValidPhone(ev.target.value)) {
+                    setMobileError(false);
+                    errors.email = false;
+                  } else {
+                    setMobileError(true)
+                    errors.email = true;
+                  }
+                }}
+                type={COMPONENTS.TEXT} isValid={mobileError} required={true} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <Input control={control} error={errors.dob} name={COMPONENTS.DOB} placeholder={STRING.DOB} type={COMPONENTS.DATE} required={true} />
@@ -116,7 +141,7 @@ const SignupForm = () => {
             </Grid>
           </Grid>
           <Button type={COMPONENTS.SUBMIT} variant={COMPONENTS.CONTAINED} color={COLORS.PRIMARY} fullWidth sx={{ mt: 3, mb: 2 }}>
-          {isLoading?<CircularProgress color='inherit' />:<>{STRING.SUBMIT}</>}
+            {isLoading ? <CircularProgress color='inherit' /> : <>{STRING.SUBMIT}</>}
           </Button>
           <Grid container>
             <Grid item>
@@ -131,8 +156,7 @@ const SignupForm = () => {
   );
 }
 
-export default SignupForm;state = { e:e.value }
-
+export default SignupForm;
 {
 
 }

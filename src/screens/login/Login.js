@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { CssBaseline } from '@mui/material';
 import Input from '../../components/input';
@@ -26,7 +26,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const navigate = useNavigate();
-  
+
   const onSubmit = (data) => {
     setIsLoading(true);
     LoginForms(data).then(response => {
@@ -82,7 +82,9 @@ const LoginForm = () => {
           <Input
             control={control} error={errors.email}
             name={COMPONENTS.EMAIL} placeholder={STRING.EMAIL}
-            type={COMPONENTS.TEXT} required={true} />
+            getOnChange={false}
+            onChange={(data) => console.log(data)}
+            type={COMPONENTS.EMAIL} required={true} />
           {/* Password */}
           <Input
             control={control}
@@ -102,7 +104,7 @@ const LoginForm = () => {
             color={COLORS.PRIMARY}
             fullWidth
             sx={{ mt: 3, mb: 2 }}>
-            {isLoading?<CircularProgress color='inherit' />:<>{STRING.SUBMIT}</>}
+            {isLoading ? <CircularProgress color='inherit' /> : <>{STRING.SUBMIT}</>}
           </Button>
           <Grid container>
             <Grid item xs={6}>

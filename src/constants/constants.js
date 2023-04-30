@@ -2,15 +2,21 @@ export const SERVICES = {
     BASE_URL: 'http://31.220.82.50:202',
     AUTHENTICATE: '/api/Auth/Authentication',
     REGISTER: '/api/Auth/Register',
+    ADDEVENT: '/api/Event/AddEvent',
+    EVENTS: '/api/Event/GetEvents',
+    DELETE: '/api/Event/DeleteEvent/',
+    UPDATE: '/api/Event/UpdateEvent?id=',
     // PROFILE:'/api/User/getuserprofile/{id}',
-    GET:'get',
+    GET: 'get',
     POST: 'post',
     HEADERS: {
         'Content-Type': 'application/json'
-    }
+    },
+
 }
 
 export const COMPONENTS = {
+    CONTAINED: 'contained',
     MARGIN_TYPE: 'normal',
     ERROR_MAIN: 'error.main',
     VALID_ERROR: 'Please Enter Valid',
@@ -22,6 +28,7 @@ export const COMPONENTS = {
     COLOR_TYPE: 'inherit',
     FONT_SIZE: 12,
     THEME: 'light',
+    DARK: 'dark',
     POSITION_BOTTOM: 'bottom-center',
     COMP_TYPE: 'main',
     MAX_WIDTH: 'xs',
@@ -32,8 +39,11 @@ export const COMPONENTS = {
     CENTER: 'center',
     FONTWEIGHT: '600',
     H4: 'h4',
+    H5: 'h5',
+    NUMBER: 'number',
     TEXT: 'text',
     EMAIL: 'email',
+    VENUEID: 'venueid',
     PASSWORD: 'password',
     REMEMBER: 'remember',
     SUBMIT: 'submit',
@@ -43,11 +53,17 @@ export const COMPONENTS = {
     CARD_HEIGHT: '100vh',
     NAME: 'name',
     ROLE: 'role',
+    DESCRIPTION: 'description',
     MOBILE: 'mobile',
     DOB: 'dob',
+    VENUEOTHER: 'venueother',
     YOP: 'yearsOfExp',
-    SPORTID: 'sportID',
+    EVENTDATE: 'eventdate',
+    SPORTID: 'sportid',
     MACHINE_ID: 'machineId',
+    EVENTENDTIME: 'eventendtime',
+    CREATEDBY: 'createdby',
+    EVENTSTARTTIME: 'eventstarttime',
     DATE: 'date'
 }
 
@@ -65,9 +81,15 @@ export const SCREENS = {
 }
 
 export const STRING = {
+    LESS: 'Less',
+    MORE: 'More',
     HOME_TITLE: 'Welcome Back',
     LOGOUT: 'Logout',
     LOGIN: 'Login',
+    UPDATE: 'Update Event',
+    ADDNEW: 'Add new Event',
+    VENUEID: 'venueID',
+    CREATEDBY: 'Created By',
     EMAIL: 'Email',
     PASSWORD: 'Password',
     REMEMBER: 'Remember me',
@@ -78,18 +100,23 @@ export const STRING = {
     SIGN_UP: 'Sign up',
     NAME: 'Name',
     ROLE: 'Role',
+    DESCRIPTION: 'Description',
     EMAIL: 'Email',
     PASSWORD: 'Password',
     MOBILE: 'Mobile',
+    VENUEOTHER: 'Venue other',
     DOB: 'Date of Birth',
+    EVENTDATE: 'Event Date',
     EXPERIENCE: 'Year of Exprience',
     SPORT_ID: 'Sport Id',
     MARCHANT: 'Machine Id',
+    EVENTENDTIME: 'Event end time',
+    EVENTSTARTTIME: 'Event start time',
     SUBMIT: 'Submit',
     LOGIN_TEXT: 'Already have a account? Log In'
 }
 
 export const UTILS = {
-    MAX_PHONE_LENGTH : 13,
-    MIN_PHONE_LENGTH : 8
+    MAX_PHONE_LENGTH: 13,
+    MIN_PHONE_LENGTH: 8
 }

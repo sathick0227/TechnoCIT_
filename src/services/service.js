@@ -32,7 +32,7 @@ export const LoginForms = (body) => {
       .then(function (response) {
         localStorage.setItem('token', response.data.token);
         const cache = localStorage.getItem('token')
-        console.log(cache)
+
         return resolve(response)
       })
       .catch(function (error) {
@@ -41,3 +41,94 @@ export const LoginForms = (body) => {
 
   })
 }
+
+export const getEvents = (Token) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.GET,
+      url: '/api/Event/GetEvents',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error.message)
+      });
+
+  })
+}
+
+export const AddEvent = (data, Token) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.POST,
+      url: SERVICES.ADDEVENT,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+      data: data
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error.message)
+      });
+
+  })
+}
+
+
+export const UpdateEvent = (data, id, Token) => {
+  console.log(data, id)
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.POST,
+      url: `${SERVICES.UPDATE}${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+      data: data
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error)
+      });
+
+  })
+}
+
+export const deleteEvent = (id, Token) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.POST,
+      url: `${SERVICES.DELETE}${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+      data: ""
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error)
+      });
+
+  })
+}
+
+
