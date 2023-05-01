@@ -30,6 +30,7 @@ const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [authenticate, setAuthenticate] = React.useState(updatedData.isLoggedIn);
   const [token, setToken] = React.useState(updatedData.userData.token);
+  console.log(token)
   const [data, setData] = React.useState();
   const [funcData, setFuncData] = React.useState()
   const [isEdit, setIsEdit] = React.useState(false);
@@ -125,7 +126,7 @@ const Home = () => {
       <AppBar position={COMPONENTS.POSITION}>
         <Toolbar>
           <Typography variant={COMPONENTS.H6} component={COMPONENTS.DIV} sx={{ textTransform: 'uppercase', flexGrow: COMPONENTS.NUM_ONE }}>
-            {`${STRING.HOME_TITLE} ${updatedData.userData.name}`}
+            {`${STRING.HOME_TITLE} ${updatedData.userData.username}`}
           </Typography>
           <Typography>
           </Typography>

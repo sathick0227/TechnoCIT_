@@ -28,41 +28,26 @@ const SignupForm = () => {
   const { handleSubmit, control, formState: { errors }, setValue } = useForm();
 
   const onSubmit = (data) => {
-    setIsLoading(true)
-    data.dob = moment.utc(data.dob).format();
-
-    // email validation
-
-    // phone number validation
-    if (isValidPhone(data) && data.mobile.length > UTILS.MIN_PHONE_LENGTH && data.mobile.length < UTILS.MAX_PHONE_LENGTH) {
-      setMobileError(false)
-      setProceed(true);
-    } else {
-      setMobileError(true)
-      setProceed(false)
-    }
-
-    if (proceed) {
-      SignupFc(data).then(response => {
-        setIsLoading(false)
-        alert(STRING.SIGNUP_SUCCESS_MSG)
-        return navigate(SCREENS.INITIAL);
-      }).catch(error => {
-        setIsLoading(false)
-        toast.error(error, {
-          position: COMPONENTS.POSITION_BOTTOM,
-          autoClose: false,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-          theme: COMPONENTS.THEME,
-        });
-      })
-
-
-    }
+    // setIsLoading(true)
+      
+    SignupFc(data).then(response => {
+      setIsLoading(false)
+      console.log(response)
+      alert(STRING.SIGNUP_SUCCESS_MSG)
+      return navigate(SCREENS.INITIAL);
+    }).catch(error => {
+      setIsLoading(false)
+      toast.error(error, {
+        position: COMPONENTS.POSITION_BOTTOM,
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: COMPONENTS.THEME,
+      });
+    })
   }
   const something = (data) => {
     if (isValidEmail(data)) {
@@ -100,7 +85,7 @@ const SignupForm = () => {
             </Grid>
           </Grid>
           <Input control={control} error={errors.email} name={COMPONENTS.EMAIL} placeholder={STRING.EMAIL}
-            getOnChange={true}
+            getOnChange={false}
             onChange={(ev) => {
               if (isValidEmail(ev.target.value)) {
                 setEmailerror(false);
@@ -115,14 +100,14 @@ const SignupForm = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Input control={control} error={errors.mobile} name={COMPONENTS.MOBILE} placeholder={STRING.MOBILE}
-                getOnChange={true}
+                getOnChange={false}
                 onChange={(ev) => {
-                  if (isValidPhone(ev.target.value)) {
+                  if (isValidPhone(ev.target.value) && ev.target.value.length > UTILS.MIN_PHONE_LENGTH && ev.target.value.length < UTILS.MAX_PHONE_LENGTH) {
                     setMobileError(false);
-                    errors.email = false;
+                    errors.mobile = false;
                   } else {
                     setMobileError(true)
-                    errors.email = true;
+                    errors.mobile = true;
                   }
                 }}
                 type={COMPONENTS.TEXT} isValid={mobileError} required={true} />
@@ -134,7 +119,7 @@ const SignupForm = () => {
           <Input control={control} error={errors.yearsOfExp} name={COMPONENTS.YOP} placeholder={STRING.EXPERIENCE} type={COMPONENTS.TEXT} required={true} />
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <Input control={control} error={errors.sportID} name={COMPONENTS.SPORTID} placeholder={STRING.SPORT_ID} type={COMPONENTS.TEXT} required={true} />
+              <Input control={control} error={errors.sportId} name={COMPONENTS.SPORTID} placeholder={STRING.SPORT_ID} type={COMPONENTS.TEXT} required={true} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <Input control={control} error={errors.machineId} name={COMPONENTS.MACHINE_ID} placeholder={STRING.MARCHANT} type={COMPONENTS.TEXT} required={false} />

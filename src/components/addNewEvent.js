@@ -28,10 +28,11 @@ const AddNewEvent = ({ handleModel, data, isEdit }) => {
 
     const onSubmit = (data) => {
         data.createdby = UserData.id;
-        Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
-
+        // Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
+        console.log(JSON.stringify(data))
         if (!isEdit) {
             AddEvent(data, token).then(response => {
+               
                 setIsLoading(true)
                 console.log('done')
                 toast.success("Event added successfully", {
@@ -61,6 +62,7 @@ const AddNewEvent = ({ handleModel, data, isEdit }) => {
 
             })
         } else {
+            
             setIsLoading(true)
             UpdateEvent(data, id, token)
                 .then(response => {
@@ -111,7 +113,7 @@ const AddNewEvent = ({ handleModel, data, isEdit }) => {
                             <Input control={control} error={errors.name} name={COMPONENTS.NAME} placeholder={STRING.NAME} defaultValue={isEdit ? data.name : ""} type={COMPONENTS.TEXT} required={isEdit ? false : true} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Input control={control} error={errors.sportid} name={COMPONENTS.SPORTID} placeholder={STRING.SPORT_ID} defaultValue={isEdit ? data.id : ""} type={COMPONENTS.NUMBER} required={isEdit ? false : true} />
+                            <Input control={control} error={errors.sportid} name={COMPONENTS.SPORTIDADD} placeholder={STRING.SPORT_ID} defaultValue={isEdit ? data.id : ""} type={COMPONENTS.NUMBER} required={isEdit ? false : true} />
                         </Grid>
                     </Grid>
                     <Input control={control} error={errors.description} name={COMPONENTS.DESCRIPTION} placeholder={STRING.DESCRIPTION} type={COMPONENTS.TEXT} multiline={true} rows={2} required={isEdit ? false : true} />

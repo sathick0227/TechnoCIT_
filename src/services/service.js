@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SERVICES } from '../constants/constants';
 
 export const SignupFc = (data) => {
+  console.log(data)
   return new Promise((resolve, reject) => {
     var config = {
       method: SERVICES.POST,
@@ -46,7 +47,7 @@ export const getEvents = (Token) => {
   return new Promise((resolve, reject) => {
     var config = {
       method: SERVICES.GET,
-      url: '/api/Event/GetEvents',
+      url: SERVICES.EVENTS,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${Token}`,
@@ -90,8 +91,8 @@ export const UpdateEvent = (data, id, Token) => {
   console.log(data, id)
   return new Promise((resolve, reject) => {
     var config = {
-      method: SERVICES.POST,
-      url: `${SERVICES.UPDATE}${id}`,
+      method: SERVICES.PUT,
+      url: SERVICES.UPDATE,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${Token}`,
