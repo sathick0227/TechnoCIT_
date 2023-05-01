@@ -23,6 +23,13 @@ module.exports = app => {
             })
     )
     app.use(
+        createProxyMiddleware('/letsunite/api/Sport/GetAllSports',
+            {
+                target: 'http://31.220.82.50:8080',
+                changeOrigin: true
+            })
+    )
+    app.use(
         createProxyMiddleware('/letsunite/api/Event/AddEvent',
             {
                 target: 'http://31.220.82.50:8080',

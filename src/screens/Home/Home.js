@@ -21,6 +21,7 @@ import { deleteEvent } from '../../services/service';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import ConfirmationDailog from '../../components/confirmationDailog.js';
 import { SCREENS, STRING, COMPONENTS, COLORS } from "../../constants/constants";
 
 const Home = () => {
@@ -30,19 +31,23 @@ const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [authenticate, setAuthenticate] = React.useState(updatedData.isLoggedIn);
   const [token, setToken] = React.useState(updatedData.userData.token);
-  console.log(token)
   const [data, setData] = React.useState();
   const [funcData, setFuncData] = React.useState()
   const [isEdit, setIsEdit] = React.useState(false);
   const [isClicked, setIsCLicked] = React.useState(false);
   const [editData, setEditData] = React.useState({});
   const [dataCount, setDataCount] = React.useState(5);
-
+  const [state,setState]=React.useState(false);
+  const [confrim,setConfrim]=React.useState(false);
+  const [deleteData,setDeleteData]=React.useState();
   const handleLogout = () => {
     dispatch(Logout_user());
     navigate(SCREENS.INITIAL)
   };
 
+  const handleConfirm=()=>{
+    setConfrim(true);
+  }
   const handleOpen = () => {
     setOpen(true);
     setIsEdit(false)
@@ -54,33 +59,14 @@ const Home = () => {
   };
 
   const handleDelete = (data) => {
-
-    deleteEvent(data.id, updatedData.userData.token).then(response => {
-      console.log(response)
-      toast.success("Event Deleted successfully", {
-        position: COMPONENTS.POSITION_BOTTOM,
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: COMPONENTS.DARK,
-      });
-      return handleModel()
-    }).catch(error => {
-      toast.error(error, {
-        position: COMPONENTS.POSITION_BOTTOM,
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: COMPONENTS.DARK,
-      });
-    })
+    setDeleteData(data);
+    handleDeleteButtonClick()
+    
+   if(confrim){
+    console.log('done')
+    
   }
+}
 
   const handleEdit = (data) => {
     setEditData(data);
@@ -101,17 +87,14 @@ const Home = () => {
   }
 
   React.useEffect(() => {
-    if (authenticate) {
+    
       navigate(SCREENS.HOME);
       getEvents(token).then(response => {
         return setData(response.data)
       }).catch(error => {
         return error
       });
-    } else {
-      navigate(SCREENS.HOME);
-    }
-  }, [dispatch, open, dataCount])
+  }, [state, open, dataCount])
 
   const style = {
     backgroundColor: 'red',
@@ -120,6 +103,48 @@ const Home = () => {
       backgroundColor: '#ff726f',
     }
   }
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDeleteField = () => {
+    setState(true)
+    deleteEvent(deleteData, updatedData.userData.token).then(response => {
+      
+      toast.success("Event Deleted successfully", {
+        position: COMPONENTS.POSITION_BOTTOM,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: COMPONENTS.DARK,
+      });
+      setState(true)
+      return 
+    }).catch(error => {
+      toast.error(error, {
+        position: COMPONENTS.POSITION_BOTTOM,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: COMPONENTS.DARK,
+      });
+    })
+    setDeleteDialogOpen(false);    
+  };
+
+  const handleDeleteButtonClick = () => {
+    setConfrim(false);
+    setDeleteDialogOpen(true);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <ToastContainer />
@@ -133,7 +158,6 @@ const Home = () => {
           <Button color={COMPONENTS.COLOR_TYPE} onClick={handleLogout}>{STRING.LOGOUT}</Button>
         </Toolbar>
       </AppBar>
-
       <Button sx={{ margin: 3 }} variant={COMPONENTS.CONTAINED} onClick={handleOpen}>{STRING.ADDNEW}</Button>
       <Modal
         open={open}
@@ -185,11 +209,11 @@ const Home = () => {
                   <TableCell align="right">{row.eventdate}</TableCell>
                   <TableCell align="right">
                     <Button variant={COMPONENTS.CONTAINED} onClick={() => handleEdit(row)}>Edit</Button>&nbsp;&nbsp;
-                    <Button sx={style} variant={COMPONENTS.CONTAINED} onClick={() => handleDelete(row)}>Delete</Button>
+                    <Button sx={style} variant={COMPONENTS.CONTAINED} onClick={() => handleDelete(row.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               ))}
-
+              <ConfirmationDailog open={deleteDialogOpen} onClose={handleDeleteDialogClose} onDelete={handleDeleteField}/>
               <Button sx={{ margin: 3 }} variant={COMPONENTS.CONTAINED} onClick={handleMore}>{dataCount === 5 ? "More" : "Less"}</Button>
             </TableBody>
           </Table>

@@ -11,28 +11,60 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import { AddEvent, UpdateEvent } from '../services/service';
+import { AddEvent, UpdateEvent,getSport} from '../services/service';
 import { useSelector, useDispatch } from 'react-redux';
+import SelectInput from './selectInput';
+import { MenuItem } from '@mui/material';
 import { COMPONENTS, COLORS, STRING } from './../constants/constants';
 
 
 
 const AddNewEvent = ({ handleModel, data, isEdit }) => {
+    
     const id = data.id;
-    let eventDate = moment(data.eventdate).format("YYYY-MM-DD")
+    let eventDate = moment(data.eventdate).format('YYYY-MM-DD')
+    
     const UserData = useSelector(state => state.userData)
+    const [subData,setSubData] =React.useState(data);
+    const [formData,setFormData] =React.useState()
     const [token, setToken] = React.useState(UserData.token);
     const [isLoading, setIsLoading] = React.useState(false);
     const [isShow, setIsShow] = React.useState(true);
-    const { handleSubmit, control, setValue, formState: { errors } } = useForm();
-
-    const onSubmit = (data) => {
-        data.createdby = UserData.id;
-        // Object.keys(data).forEach(key => data[key] === undefined && delete data[key])
-        console.log(JSON.stringify(data))
+    const [sportData,setSportData] = React.useState();
+    const [sportSelectValue,setSportSelectValue]=React.useState();
+    const {register, handleSubmit, control, setValue, formState: { errors } } = useForm();
+    
+    useEffect(()=>{
+        getSport(token).then(response => {
+          return  setSportData(response.data);
+        }).catch(error => {
+           console.log(error.message)
+        });
+    },[])
+    
+    
+    const SelectChange =(event)=>{
+        setSportSelectValue(event.target.value);
+        console.log(sportSelectValue)
+    }
+   
+    const onSubmit = (datas,event) => {
+        event.preventDefault();
+       
+        
+        datas.sportid=sportSelectValue;
+        datas.id=id;
+        
+        datas.eventstarttime=subData.eventstarttime
+        datas.eventendtime=subData.eventendtime
+        
+        console.log(subData)
+        console.log(datas)
+        // Object.keys(datas).forEach(key => datas[key] === undefined && delete datas[key]);
+        
         if (!isEdit) {
-            AddEvent(data, token).then(response => {
-               
+            datas.createdby = UserData.id;
+            AddEvent(datas, token).then(response => {
                 setIsLoading(true)
                 console.log('done')
                 toast.success("Event added successfully", {
@@ -48,7 +80,6 @@ const AddNewEvent = ({ handleModel, data, isEdit }) => {
                 return handleModel()
             }).catch(error => {
                 setIsLoading(false)
-
                 toast.error(error.message, {
                     position: COMPONENTS.POSITION_BOTTOM,
                     autoClose: 2000,
@@ -62,9 +93,8 @@ const AddNewEvent = ({ handleModel, data, isEdit }) => {
 
             })
         } else {
-            
             setIsLoading(true)
-            UpdateEvent(data, id, token)
+            UpdateEvent(datas,token)
                 .then(response => {
                     setIsLoading(false);
                     toast.success("Event Updated successfully", {
@@ -108,15 +138,21 @@ const AddNewEvent = ({ handleModel, data, isEdit }) => {
                     <Typography sx={{ textAlign: COMPONENTS.CENTER, fontWeight: COMPONENTS.FONTWEIGHT }} variant={COMPONENTS.H5} gutterBottom>
                         {isEdit ? STRING.UPDATE : STRING.ADDNEW}
                     </Typography>
+                    
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                            <Input control={control} error={errors.name} name={COMPONENTS.NAME} placeholder={STRING.NAME} defaultValue={isEdit ? data.name : ""} type={COMPONENTS.TEXT} required={isEdit ? false : true} />
+                        <Input control={control} error={errors.name} name={COMPONENTS.NAME} placeholder={STRING.NAME} defaultValue={isEdit ? data.name : ""} type={COMPONENTS.TEXT} required={isEdit ? false : true} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Input control={control} error={errors.sportid} name={COMPONENTS.SPORTIDADD} placeholder={STRING.SPORT_ID} defaultValue={isEdit ? data.id : ""} type={COMPONENTS.NUMBER} required={isEdit ? false : true} />
+                        <SelectInput sx={{marginTop:2,color:'black'}}  name="sportid"  defaultValue={isEdit?data.sportid:""} onChange={(e)=>SelectChange(e)}  control={control} >
+                        <MenuItem value="" disabled>Sport Name</MenuItem>
+                        {sportData && sportData.data.map((list,index)=>(
+                            <MenuItem key={index} value={list.id}>{list.id}.{list.name}</MenuItem>
+                        ))}
+                        </SelectInput>
                         </Grid>
                     </Grid>
-                    <Input control={control} error={errors.description} name={COMPONENTS.DESCRIPTION} placeholder={STRING.DESCRIPTION} type={COMPONENTS.TEXT} multiline={true} rows={2} required={isEdit ? false : true} />
+                    <Input control={control} error={errors.description} name={COMPONENTS.DESCRIPTION} defaultValue={isEdit ? data.description : ""} placeholder={STRING.DESCRIPTION} type={COMPONENTS.TEXT} multiline={true} rows={2} required={isEdit ? false : true} />
 
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>

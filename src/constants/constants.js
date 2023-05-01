@@ -6,6 +6,7 @@ export const SERVICES = {
     EVENTS: '/letsunite/api/Event/GetEvents',
     DELETE: '/letsunite/api/Event/DeleteEvent/',
     UPDATE: '/letsunite/api/Event/UpdateEvent',
+    GETSPORT:'/letsunite/api/Sport/GetAllSports',
     GET: 'get',
     POST: 'post',
     PUT:'put',

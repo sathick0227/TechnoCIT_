@@ -87,8 +87,7 @@ export const AddEvent = (data, Token) => {
 }
 
 
-export const UpdateEvent = (data, id, Token) => {
-  console.log(data, id)
+export const UpdateEvent = (data, Token) => {
   return new Promise((resolve, reject) => {
     var config = {
       method: SERVICES.PUT,
@@ -97,7 +96,7 @@ export const UpdateEvent = (data, id, Token) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${Token}`,
       },
-      data: data
+      data:data
     };
     axios(config)
       .then(function (response) {
@@ -132,4 +131,25 @@ export const deleteEvent = (id, Token) => {
   })
 }
 
+export const getSport = (Token) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.GET,
+      url: SERVICES.GETSPORT,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+      data: ""
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error)
+      });
+
+  })
+}
 

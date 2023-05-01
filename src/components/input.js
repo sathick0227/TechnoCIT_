@@ -5,9 +5,8 @@ import Box from '@mui/material/Box';
 import { COMPONENTS } from "../constants/constants";
 
 const Input = (props) => {
-  const name = props.name;
-
   const required = props.required;
+
   return (
     <>
       <Controller
@@ -28,7 +27,8 @@ const Input = (props) => {
           defaultValue={props.defaultValue}
           fullWidth
 
-        /> : <TextField
+        /> : 
+      <TextField
           {...field}
           multiline={props.multiline}
           disabled={props.disabled}
