@@ -100,8 +100,6 @@ const Home = () => {
   }
 
   React.useEffect(() => {
-    const getData = localStorage.removeItem('token')
-    localStorage.removeItem('token');
     if (authenticate) {
       navigate(SCREENS.HOME);
       getEvents(token).then(response => {
