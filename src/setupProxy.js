@@ -50,4 +50,18 @@ module.exports = app => {
                 changeOrigin: true
             })
     )
+    app.use(
+        createProxyMiddleware('/letsunite/api/Event/GetEventById/',
+            {
+                target: 'http://31.220.82.50:8080',
+                changeOrigin: true
+            })
+    )
+    app.use(
+        createProxyMiddleware('/letsunite/api/Venue/GetVenueList',
+            {
+                target: 'http://31.220.82.50:8080',
+                changeOrigin: true
+            })
+    )
 }   

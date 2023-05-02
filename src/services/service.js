@@ -88,6 +88,7 @@ export const AddEvent = (data, Token) => {
 
 
 export const UpdateEvent = (data, Token) => {
+  console.log(data)
   return new Promise((resolve, reject) => {
     var config = {
       method: SERVICES.PUT,
@@ -153,3 +154,46 @@ export const getSport = (Token) => {
   })
 }
 
+export const getEventById = (id, Token) => {
+
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.GET,
+      url: `${SERVICES.GETEVENTBYID}${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+      data: ""
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error)
+      });
+
+  })
+}
+
+export const getVenueList = (Token) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: SERVICES.GET,
+      url: SERVICES.GETVENUELIST,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Token}`,
+      },
+    };
+    axios(config)
+      .then(function (response) {
+        return resolve(response)
+      })
+      .catch(function (error) {
+        return reject(error.message)
+      });
+
+  })
+}

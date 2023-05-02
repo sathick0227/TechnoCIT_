@@ -35,11 +35,13 @@ const Home = () => {
   const [funcData, setFuncData] = React.useState()
   const [isEdit, setIsEdit] = React.useState(false);
   const [isClicked, setIsCLicked] = React.useState(false);
-  const [editData, setEditData] = React.useState({});
+  const [editData, setEditData] = React.useState();
   const [dataCount, setDataCount] = React.useState(5);
   const [state,setState]=React.useState(false);
   const [confrim,setConfrim]=React.useState(false);
   const [deleteData,setDeleteData]=React.useState();
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
   const handleLogout = () => {
     dispatch(Logout_user());
     navigate(SCREENS.INITIAL)
@@ -64,7 +66,6 @@ const Home = () => {
     
    if(confrim){
     console.log('done')
-    
   }
 }
 
@@ -104,7 +105,6 @@ const Home = () => {
     }
   }
 
-  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const handleDeleteDialogClose = () => {
     setDeleteDialogOpen(false);
@@ -142,6 +142,7 @@ const Home = () => {
   };
 
   const handleDeleteButtonClick = () => {
+    setState(false)
     setConfrim(false);
     setDeleteDialogOpen(true);
   };
@@ -174,7 +175,7 @@ const Home = () => {
           marginLeft: '25%',
           borderRadius: 5
         }}>
-          <AddNewEvent isEdit={isEdit} data={editData} handleModel={() => handleModel()} />
+          <AddNewEvent isEdit={isEdit} id={editData} handleModel={() => handleModel()} />
         </Box>
       </Modal>
       <Box sx={{
@@ -208,7 +209,7 @@ const Home = () => {
                   <TableCell align="right">{row.venue.name}</TableCell>
                   <TableCell align="right">{row.eventdate}</TableCell>
                   <TableCell align="right">
-                    <Button variant={COMPONENTS.CONTAINED} onClick={() => handleEdit(row)}>Edit</Button>&nbsp;&nbsp;
+                    <Button variant={COMPONENTS.CONTAINED} onClick={() => handleEdit(row.id)}>Edit</Button>&nbsp;&nbsp;
                     <Button sx={style} variant={COMPONENTS.CONTAINED} onClick={() => handleDelete(row.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>

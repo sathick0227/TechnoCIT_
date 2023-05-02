@@ -85,7 +85,7 @@ const SignupForm = () => {
             </Grid>
           </Grid>
           <Input control={control} error={errors.email} name={COMPONENTS.EMAIL} placeholder={STRING.EMAIL}
-            getOnChange={false}
+            getOnChange={true}
             onChange={(ev) => {
               if (isValidEmail(ev.target.value)) {
                 setEmailerror(false);
@@ -100,7 +100,7 @@ const SignupForm = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Input control={control} error={errors.mobile} name={COMPONENTS.MOBILE} placeholder={STRING.MOBILE}
-                getOnChange={false}
+                getOnChange={true}
                 onChange={(ev) => {
                   if (isValidPhone(ev.target.value) && ev.target.value.length > UTILS.MIN_PHONE_LENGTH && ev.target.value.length < UTILS.MAX_PHONE_LENGTH) {
                     setMobileError(false);

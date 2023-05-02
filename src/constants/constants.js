@@ -7,6 +7,8 @@ export const SERVICES = {
     DELETE: '/letsunite/api/Event/DeleteEvent/',
     UPDATE: '/letsunite/api/Event/UpdateEvent',
     GETSPORT:'/letsunite/api/Sport/GetAllSports',
+    GETEVENTBYID:'/letsunite/api/Event/GetEventById/',
+    GETVENUELIST:'/letsunite/api/Venue/GetVenueList',
     GET: 'get',
     POST: 'post',
     PUT:'put',
